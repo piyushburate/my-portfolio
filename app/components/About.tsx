@@ -50,12 +50,6 @@ const About = ({ isDarkMode }: Props) => {
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.8 }}
                     className='space-y-4 flex-1 text-justify'>
-                    {/* <p>
-                        I'm a passionate Full Stack Developer with hands-on experience building and scaling modern web and mobile applications using technologies like Flutter, Supabase, Next.js, Laravel. My work spans across diverse projects—including Stillnote, ShortUrl, and ExamMate—where I've led the end-to-end development process from architecture to deployment.
-                    </p>
-                    <p>
-                        I specialize in crafting seamless user experiences backed by robust backend systems. Whether it's integrating real-time features with Supabase, designing scalable RESTful APIs in Laravel, or building performant UIs with Flutter and Next.js, I thrive in full stack environments.
-                    </p> */}
                     <p className='font-Ovo'>
                         With a strong grasp of database design, cloud integrations, and agile workflows, I’m driven by continuous learning and always looking to push boundaries with clean, efficient, and innovative code.
                     </p>
@@ -80,7 +74,7 @@ const About = ({ isDarkMode }: Props) => {
                         initial={{ y: 20, opacity: 0 }}
                         whileInView={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.5, delay: 1.3 }}
-                        className='my-6 text-green-700 font-Ovo dark:text-white/80'>
+                        className='my-6 text-gray-700 font-Ovo dark:text-white/80'>
                         Tools I use
                     </motion.h4>
                     <motion.ul

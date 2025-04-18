@@ -4,11 +4,7 @@ import { assets } from '@/assets/assets'
 import { motion } from "motion/react"
 import { spring } from 'motion'
 
-type Props = {
-    isDarkMode: boolean,
-}
-
-const Header = ({ isDarkMode }: Props) => {
+const Header = () => {
     return (
         <div className='w-11/12 max-w-3x1 text-center mx-auto h-screen flex flex-col items-center justify-center gap-4'>
             <motion.div
@@ -41,8 +37,8 @@ const Header = ({ isDarkMode }: Props) => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.7 }}
                 className='max-w-2xl mx-auto font-Ovo' >
-                I am a frontend developer from California, USA with 10 years of experience
-                in multiple companies like Microsoft, Tesla and Apple.
+                I&apos;m a full stack developer from Maharashtra, India, passionate about building scalable, efficient, and user-friendly applications.
+                I&apos;ve worked across the entire stack—web, mobile, backend, and cloud—crafting solutions through hands-on experience and real-world projects.
             </motion.p>
 
             <div className='flex flex-col sm:flex-row items-center gap-4 mt-4'>
@@ -59,7 +55,7 @@ const Header = ({ isDarkMode }: Props) => {
                     initial={{ y: 30, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, delay: 1.2 }}
-                    href="/sample-resume.pdf" className="flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 bg-white dark:text-black">
+                    href="/resume.pdf" className="flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 bg-white dark:text-black">
                     My Resume <Image src={assets.arrow_icon} alt="Arrow Icon" className="w-3" />
                 </motion.a>
             </div>

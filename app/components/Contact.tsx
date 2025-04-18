@@ -3,11 +3,7 @@ import Image from 'next/image'
 import { assets } from '@/assets/assets'
 import { motion } from 'motion/react'
 
-type Props = {
-    isDarkMode: boolean,
-}
-
-const Contact = ({ isDarkMode }: Props) => {
+const Contact = () => {
     const [result, setResult] = React.useState("");
 
     const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -61,7 +57,7 @@ const Contact = ({ isDarkMode }: Props) => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
                 className='text-center max-w-2xl mx-auto mt-5 gap-12 font-Ovo'>
-                I'd love to hear from you! If you have any questions, comments, or feedback, please use the form below.
+                I&apos;d love to hear from you! If you have any questions, comments, or feedback, please use the form below.
             </motion.p>
 
             <motion.form

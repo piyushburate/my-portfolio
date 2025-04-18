@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { assets } from '@/assets/assets'
+import Link from "next/link";
 
 type Props = {
     isDarkMode: boolean,
@@ -37,15 +38,15 @@ const Navbar = ({ isDarkMode, setIsDarkMode }: Props) => {
             <Image src={assets.header_bg_color} alt="Header Backgound" className="w-full" />
         </div>
         <nav className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 ${isScroll ? "bg-white/50 backdrop-blur-lg shadow-sm dark:shadow-white/20 dark:bg-dark-theme" : ""}`}>
-            <a href="">
+            <Link href="">
                 <Image src={isDarkMode ? assets.logo_dark : assets.logo} alt="App Logo" className="w-28 cursor-pointer mr-14" />
-            </a>
+            </Link>
             <ul className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 ${isScroll ? "" : "bg-white/50 shadow-sm dark:border dark:border-white/50 dark:bg-transparent"}`}>
-                <li><a className="font-Ovo" href="">Home</a></li>
-                <li><a className="font-Ovo" href="#about">About Me</a></li>
-                <li><a className="font-Ovo" href="#services">Services</a></li>
-                <li><a className="font-Ovo" href="#work">My Work</a></li>
-                <li><a className="font-Ovo" href="#contact">Contact Me</a></li>
+                <li><Link className="font-Ovo" href="">Home</Link></li>
+                <li><Link className="font-Ovo" href="#about">About Me</Link></li>
+                <li><Link className="font-Ovo" href="#services">Services</Link></li>
+                <li><Link className="font-Ovo" href="#work">My Work</Link></li>
+                <li><Link className="font-Ovo" href="#contact">Contact Me</Link></li>
             </ul>
 
             <div className="flex items-center gap-4">
@@ -62,11 +63,11 @@ const Navbar = ({ isDarkMode, setIsDarkMode }: Props) => {
                 <div className="absolute right-6 top-6" onClick={closeMenu}>
                     <Image src={isDarkMode ? assets.close_white : assets.close_black} alt="Close Icon" className="w-5 cursor-pointer" />
                 </div>
-                <li><a className="font-Ovo" onClick={closeMenu} href="/">Home</a></li>
-                <li><a className="font-Ovo" onClick={closeMenu} href="#about">About Me</a></li>
-                <li><a className="font-Ovo" onClick={closeMenu} href="#services">Services</a></li>
-                <li><a className="font-Ovo" onClick={closeMenu} href="#work">My Work</a></li>
-                <li><a className="font-Ovo" onClick={closeMenu} href="#contact">Contact Me</a></li>
+                <li><Link className="font-Ovo" onClick={closeMenu} href="/">Home</Link></li>
+                <li><Link className="font-Ovo" onClick={closeMenu} href="#about">About Me</Link></li>
+                <li><Link className="font-Ovo" onClick={closeMenu} href="#services">Services</Link></li>
+                <li><Link className="font-Ovo" onClick={closeMenu} href="#work">My Work</Link></li>
+                <li><Link className="font-Ovo" onClick={closeMenu} href="#contact">Contact Me</Link></li>
             </ul>
         </nav>
     </>;

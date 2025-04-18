@@ -3,11 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import { motion } from 'motion/react'
 
-type Props = {
-    isDarkMode: boolean,
-}
-
-const Services = ({ isDarkMode }: Props) => {
+const Services = () => {
     return (
         <motion.div
             initial={{ opacity: 0 }}
