@@ -37,8 +37,8 @@ const Header = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.7 }}
                 className='max-w-2xl mx-auto font-Ovo' >
-                I&apos;m a full stack developer from Maharashtra, India, passionate about building scalable, efficient, and user-friendly applications.
-                I&apos;ve worked across the entire stack—web, mobile, backend, and cloud—crafting solutions through hands-on experience and real-world projects.
+                Dynamic Mobile App Developer specializing in Flutter with a strong focus on UI/UX design and scalable application development.
+                Skilled in problem solving, mentoring junior developers, and integrating RESTful APIs, Firebase, and third-party packages. Passionate about leveraging the latest mobile technologies to build high-performance, user-centric solutions
             </motion.p>
 
             <div className='flex flex-col sm:flex-row items-center gap-4 mt-4'>

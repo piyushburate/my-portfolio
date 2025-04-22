@@ -36,8 +36,8 @@ const Work = ({ isDarkMode }: Props) => {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
                 className='text-center max-w-2xl mx-auto mt-5 gap-12 font-Ovo'>
-                Welcome to my web development portfolio! Explore a collection of projects
-                showcasing my expertise in front-end development.
+                Welcome to my portfolio! Explore a collection of projects
+                showcasing my expertise in application development.
             </motion.p>
 
             <motion.div
@@ -66,7 +66,7 @@ const Work = ({ isDarkMode }: Props) => {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1.1 }}
-                href="" className='w-max flex items-center justify-center gap-2 text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto my-20 hover:bg-light-hover duration-500 dark:text-white dark:border-white dark:hover:bg-dark-hover'>
+                href="https://github.com/piyushburate" className='w-max flex items-center justify-center gap-2 text-gray-700 border-[0.5px] border-gray-700 rounded-full py-3 px-10 mx-auto my-20 hover:bg-light-hover duration-500 dark:text-white dark:border-white dark:hover:bg-dark-hover'>
                 Show More
                 <Image src={isDarkMode ? assets.right_arrow_bold_dark : assets.right_arrow_bold} alt='Right Arrow Icon' className='w-4' />
             </motion.a>
