@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Onest } from "next/font/google";
 import "./globals.css";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import AppNavbar from "@/components/app-navbar";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -9,6 +13,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const onest = Onest({
+  variable: "--font-onest",
   subsets: ["latin"],
 });
 
@@ -23,11 +32,39 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                (function() {
+                if(typeof window === "undefined") return;
+                if (window.localStorage) {
+                  try {
+                    const stored = localStorage.getItem("theme");
+                    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                    if (stored === "dark" || (!stored && prefersDark)) {
+                      document.documentElement.classList.add("dark");
+                    }
+                  } catch (e) {}
+                }
+                })();
+              `,
+          }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${onest.className} antialiased`}
       >
-        {children}
+        <Suspense>
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset className="overflow-y-hidden">
+              <AppNavbar />
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
+        </Suspense>
       </body>
     </html>
   );
