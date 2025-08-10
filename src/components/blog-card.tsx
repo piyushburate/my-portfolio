@@ -10,7 +10,7 @@ import {
   CardDescription,
 } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import Image from "next/image";
 
 type BlogCardProps = {
@@ -18,7 +18,7 @@ type BlogCardProps = {
   title: string;
   description?: string;
   coverImage?: string;
-  date: Date;
+  publishedAt: string;
   views: number;
   featured?: boolean;
   className?: string;
@@ -29,16 +29,11 @@ export default function BlogCard({
   title,
   description,
   coverImage,
-  date,
+  publishedAt,
   views,
   featured = false,
   className,
 }: BlogCardProps) {
-  const formattedDate = new Intl.DateTimeFormat("en-US", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(date));
 
   return (
     <Link href={link} className={cn("block group", className)}>
@@ -64,6 +59,7 @@ export default function BlogCard({
                   className="w-full h-full object-cover"
                   fill
                   alt="Blog Cover Image"
+                  priority
                 />
               </div>
               <div className="absolute inset-0 w-full h-full"></div>
@@ -79,7 +75,7 @@ export default function BlogCard({
           <CardTitle className="text-xl text-white text-ellipsis line-clamp-2 md:line-clamp-1 group-hover:underline underline-offset-[6px]">
             {title}
           </CardTitle>
-          <CardDescription className="!hidden sm:!block text-md text-white text-ellipsis line-clamp-2 md:line-clamp-1">
+          <CardDescription className="text-md text-white text-ellipsis line-clamp-2">
             {description}
           </CardDescription>
           <CardDescription className="space-x-3">
@@ -88,7 +84,7 @@ export default function BlogCard({
               className="bg-transparent px-0 text-neutral-300"
             >
               <DateIcon />
-              <span className="whitespace-pre-wrap">{formattedDate}</span>
+              <span className="whitespace-pre-wrap">{formatDate(publishedAt)}</span>
             </Badge>
             <Badge
               variant="secondary"

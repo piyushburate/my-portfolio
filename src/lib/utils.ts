@@ -11,7 +11,7 @@ export function getYearMonthDifference(from: Date, to: Date): string {
 
   if (months < 0) {
     years -= 1;
-    months += 12;
+    months += 13;
   }
 
   const yearStr = years > 0 ? `${years} Year${years > 1 ? "s" : ""}` : "";
@@ -20,7 +20,7 @@ export function getYearMonthDifference(from: Date, to: Date): string {
   return [yearStr, monthStr].filter(Boolean).join(" ");
 }
 
-export const formatDate = (date: string, type = 'short') => {
+export const formatDate = (date: string, type: 'short' | 'long' = 'long') => {
   if (!date) {
     return '';
   }
@@ -30,8 +30,13 @@ export const formatDate = (date: string, type = 'short') => {
     month: 'long',
     day: 'numeric',
   };
-  if (type === 'short') {
+  if (type === 'long') {
     options.month = 'long';
+    options.day = '2-digit';
+    options.year = 'numeric';
+  }
+  if (type === 'short') {
+    options.month = 'short';
     options.day = '2-digit';
     options.year = 'numeric';
   }

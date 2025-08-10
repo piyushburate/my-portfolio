@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
@@ -13,15 +13,32 @@ import { Badge } from "@/components/ui/badge";
 import BlogCard from "@/components/blog-card";
 import SearchBar from "@/components/search-bar";
 import { BsStarFill } from "react-icons/bs";
+import { useBlogsStore } from "@/stores/use-blogs-store";
+import { BlogCardSkeleton } from "@/components/skeletons/blog-card-skeleton";
+import { useSearchParams } from "next/navigation";
+import { PaginationControl } from "@/components/pagination-control";
+import PageContainer from "@/components/page-container";
 
 export default function BlogsPage() {
+  const searchParams = useSearchParams();
+  const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
+
+  const { blogs, totalBlogs, perPage, featuredBlogs, fetchBlogs, loading } =
+    useBlogsStore();
+
+  useEffect(() => {
+    if (blogs.length == 0) {
+      fetchBlogs(pageFromUrl);
+    }
+  }, []);
+
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
   const [searchTerm, setSearchTerm] = React.useState("");
 
   return (
-    <div className="py-10 px-8">
+    <PageContainer>
       <section className="flex justify-center">
         <Carousel
           plugins={[plugin.current]}
@@ -30,21 +47,25 @@ export default function BlogsPage() {
           onMouseLeave={plugin.current.reset}
         >
           <CarouselContent>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem key={index}>
-                <BlogCard
-                  link={`/blog/${index + 1}`}
-                  title={`Blog Post ${index + 1}`}
-                  description={`This is a brief description of blog post ${
-                    index + 1
-                  }.`}
-                  coverImage={`https://picsum.photos/seed/${index}/800/400`}
-                  date={new Date(`2023-10-${index + 1}`)}
-                  views={700 + index * 50}
-                  featured={true}
-                />
+            {loading && featuredBlogs.length == 0 && (
+              <CarouselItem>
+                <BlogCardSkeleton featured={true} />
               </CarouselItem>
-            ))}
+            )}
+            {featuredBlogs.length > 0 &&
+              featuredBlogs.map((blog, index) => (
+                <CarouselItem key={index}>
+                  <BlogCard
+                    link={`/blog/${blog.slug}`}
+                    title={blog.title}
+                    description={blog.description}
+                    coverImage={blog.coverImage.url}
+                    publishedAt={blog.publishedAt}
+                    views={700 + index * 50}
+                    featured={true}
+                  />
+                </CarouselItem>
+              ))}
           </CarouselContent>
           {/* Card Controls */}
           <CarouselPrevious className="top-10 left-auto right-20" />
@@ -72,21 +93,33 @@ export default function BlogsPage() {
           />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <BlogCard
-              key={index}
-              link={`/blog/${index + 1}`}
-              title={`Blog Post ${index + 1}`}
-              description={`This is a brief description of blog post ${
-                index + 1
-              }.`}
-              coverImage={`https://picsum.photos/seed/${index}/400/200`}
-              date={new Date(`2023-10-${index + 1}`)}
-              views={700 + index * 50}
-            />
-          ))}
+          {loading &&
+            blogs.length == 0 &&
+            Array.from({ length: 6 }).map((_, index) => (
+              <BlogCardSkeleton key={index} />
+            ))}
+          {blogs.length > 0 &&
+            blogs.map((blog, index) => (
+              <BlogCard
+                key={index}
+                link={`/blog/${blog.slug}`}
+                title={blog.title}
+                description={blog.description}
+                coverImage={blog.coverImage.url}
+                publishedAt={blog.publishedAt}
+                views={700 + index * 50}
+              />
+            ))}
         </div>
       </section>
-    </div>
+      <section className="mt-10 flex justify-center">
+        <PaginationControl
+          total={totalBlogs}
+          page={pageFromUrl}
+          perPage={perPage}
+          onChange={(p) => fetchBlogs(p)}
+        />
+      </section>
+    </PageContainer>
   );
 }

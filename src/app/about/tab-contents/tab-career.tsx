@@ -1,23 +1,49 @@
 import React from "react";
 import CareerCard from "../../../components/career-card";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function TabCareer() {
+type TabCareerProps = {
+  loading: boolean;
+  data: {
+    jobTitle: string;
+    companyName: string;
+    companyDetail: string;
+    location: string;
+    startDate: string;
+    endDate: string;
+    jobType: string;
+    workMode: string;
+    responsibilities: string[];
+    logo: {
+      url: string;
+    } | null;
+  }[];
+};
+
+export default function TabCareer({ loading, data }: TabCareerProps) {
   return (
     <div className="flex flex-col gap-4">
-      {Array.from({ length: 6 }).map((_, index) => (
-        <CareerCard
-          key={index}
-          title={`Career Title ${index + 1}`}
-          company_short_name={`Company ${index + 1}`}
-          company_full_name={`Full Company Name ${index + 1}`}
-          company_location={`Location ${index + 1}`}
-          start_date={new Date(2020, index, 1)}
-          end_date={index % 2 === 0 ? null : new Date(2022, index, 1)}
-          career_timing="Full-time"
-          career_type="Remote"
-          logo={`https://picsum.photos/seed/${index}/56/56`}
-        />
-      ))}
+      {loading && data == null
+        ? Array.from({ length: 3 }).map((_, index) => (
+            <Skeleton key={index} className="w-full h-36" />
+          ))
+        : data
+            .toReversed()
+            .map((career, index) => (
+              <CareerCard
+                key={index}
+                jobTitle={career.jobTitle}
+                companyName={career.companyName}
+                companyDetail={career.companyDetail}
+                location={career.location}
+                startDate={career.startDate}
+                endDate={career.endDate}
+                jobType={career.jobType}
+                workMode={career.workMode}
+                responsibilities={career.responsibilities}
+                logo={career.logo?.url ?? null}
+              />
+            ))}
     </div>
   );
 }

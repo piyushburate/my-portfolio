@@ -1,39 +1,69 @@
 "use client";
 
 import BlogCard from "@/components/blog-card";
+import PageContainer from "@/components/page-container";
 import SectionHeading from "@/components/section-heading";
+import { BlogCardSkeleton } from "@/components/skeletons/blog-card-skeleton";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { STACKS } from "@/constants/stacks";
+import { useHomeStore } from "@/stores/use-home-store";
+import { useLatestBlogsStore } from "@/stores/use-latest-blogs-store";
 import Link from "next/link";
+import { useEffect } from "react";
 import { BsArrowRight } from "react-icons/bs";
 
 export default function HomePage() {
+  const { data, fetchData, loading: homeLoading } = useHomeStore();
+  const { blogs, fetchBlogs, loading } = useLatestBlogsStore();
+
+  useEffect(() => {
+    if (data == null) {
+      fetchData();
+    }
+    if (blogs.length == 0) {
+      fetchBlogs();
+    }
+  }, []);
+
   return (
-    <div className="py-10 px-8">
+    <PageContainer>
       {/* Introduction */}
-      <section className="bg-cover bg-no-repeat ">
-        <div className="space-y-3">
-          <div className="flex gap-2 text-2xl font-medium lg:text-3xl">
-            <h1>Hi, I&apos;m Piyush</h1> <div className="ml-1">👋</div>
+      {homeLoading && data == null && (
+        <div className="space-y-6">
+          <Skeleton className="w-64 h-8" />
+          <div className="flex gap-4 mb-8">
+            <Skeleton className="w-52 h-4" />
+            <Skeleton className="w-36 h-4" />
           </div>
-          <div className="space-y-4">
-            <ul className="ml-5 flex list-disc flex-col gap-1 text-muted-foreground lg:flex-row lg:gap-10">
-              <li>
-                Based in Maharashtra, India{" "}
-                <span className="ml-1 text-xs">IN</span>
-              </li>
-              <li>Working remotely</li>
-            </ul>
+          <div className="flex flex-col gap-3">
+            <Skeleton className="w-full h-4" />
+            <Skeleton className="w-full h-4" />
+            <Skeleton className="w-full h-4" />
+            <Skeleton className="w-full h-4" />
           </div>
         </div>
+      )}
+      {data && (
+        <section className="bg-cover bg-no-repeat ">
+          <div className="space-y-3">
+            <div className="flex gap-2 text-2xl font-medium lg:text-3xl">
+              <h1>Hi, I&apos;m {data.firstName}</h1>{" "}
+              <div className="ml-1">👋</div>
+            </div>
+            <div className="space-y-4">
+              <ul className="ml-5 flex list-disc flex-col gap-1 text-muted-foreground lg:flex-row lg:gap-10">
+                <li>Based in {data.location}</li>
+                <li>Working {data.workingMode}</li>
+              </ul>
+            </div>
+          </div>
 
-        <p className="mt-6 leading-[1.8] text-accent-background md:leading-loose">
-          Seasoned Software Engineer especially in Frontend side, with a passion
-          for creating pixel-perfect web experiences. I work with JavaScript and
-          specialize in all-things web. I thrive on collaborating with teams to
-          deliver efficient, scalable, and visually appealing web applications.
-        </p>
-      </section>
+          <p className="mt-6 leading-[1.8] text-accent-background md:leading-loose">
+            {data.description}
+          </p>
+        </section>
+      )}
       <Separator className="my-8" />
       <section className="flex flex-col gap-6">
         <div className="flex justify-between items-center gap-2">
@@ -47,21 +77,24 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="flex-1 flex gap-4 overflow-x-auto no-scrollbar">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <BlogCard
-              key={index}
-              link={`/blog/${index + 1}`}
-              title={`Blog Post ${index + 1}`}
-              description={`This is a brief description of blog post ${
-                index + 1
-              }.`}
-              coverImage={`https://picsum.photos/seed/${index}/800/400`}
-              date={new Date(`2023-10-${index + 1}`)}
-              views={700 + index * 50}
-              featured={false}
-              className="min-w-[300px]"
-            />
-          ))}
+          {loading &&
+            blogs.length == 0 &&
+            Array.from({ length: 5 }).map((_, index) => (
+              <BlogCardSkeleton key={index} />
+            ))}
+          {blogs.length > 0 &&
+            blogs.map((blog, index) => (
+              <BlogCard
+                key={index}
+                link={`/blog/${blog.slug}`}
+                title={blog.title}
+                description={blog.description}
+                coverImage={blog.coverImage.url}
+                publishedAt={blog.publishedAt}
+                views={700 + index * 50}
+                className="min-w-[300px]"
+              />
+            ))}
         </div>
       </section>
       <Separator className="my-8" />
@@ -73,12 +106,12 @@ export default function HomePage() {
               key={key}
               className="flex items-center gap-2 rounded-4xl shadow-lg dark:bg-accent border px-4 py-3"
             >
-              {STACKS[key]}
-              <span className="text-sm">{key}</span>
+              {STACKS[key]?.icon}
+              <span className="text-sm">{STACKS[key]?.label}</span>
             </div>
           ))}
         </div>
       </section>
-    </div>
+    </PageContainer>
   );
 }

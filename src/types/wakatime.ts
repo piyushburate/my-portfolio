@@ -5,13 +5,21 @@ export interface ItemProps {
 }
 
 export interface DataProps {
-  last_update: Date,
-  start_date: Date,
-  end_date: Date,
+  lastUpdate: string,
+  startDate: string,
+  endDate: string,
   categories: ItemProps[],
-  best_day: { date: Date, text: string },
-  human_readable_daily_average : string,
-  human_readable_total: string,
+  bestDay: { date: string, text: string },
+  humanReadableDailyAverage: string,
+  humanReadableTotal: string,
   languages: ItemProps[],
   editors: ItemProps[],
+  allTimeSinceToday: {
+    text: string;
+    total_seconds: string;
+  } | null,
+  todayCodetime: {
+    text: string;
+    total_seconds: string;
+  } | null,
 };

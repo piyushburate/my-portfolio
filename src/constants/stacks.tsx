@@ -1,81 +1,105 @@
 import { JSX } from "react";
 import { BsFillBootstrapFill, BsRobot } from "react-icons/bs";
 import {
-  SiAngular,
-  SiApollographql,
   SiCss3,
+  SiDart,
   SiExpress,
   SiFirebase,
-  SiGatsby,
+  SiFlutter,
   SiGraphql,
   SiJavascript,
-  SiJest,
   SiJquery,
   SiLaravel,
-  SiMui,
   SiNextdotjs,
-  SiNginx,
   SiNodedotjs,
-  SiNuxtdotjs,
   SiPhp,
   SiPrisma,
-  SiPwa,
   SiReact,
-  SiRedux,
-  SiSocketdotio,
-  SiStorybook,
-  SiStyledcomponents,
+  SiSupabase,
   SiTailwindcss,
   SiTypescript,
   SiVite,
-  SiVuedotjs,
-  SiWebpack,
-  SiWordpress,
 } from "react-icons/si";
 
 export type stacksProps = {
-  [key: string]: JSX.Element;
+  [key: string]: {
+    label: string;
+    icon: JSX.Element;
+  };
 };
 
 const iconSize = 20;
 
 export const STACKS: stacksProps = {
-  PHP: <SiPhp size={iconSize} className="text-blue-500" />,
-  JavaScript: <SiJavascript size={iconSize} className="text-yellow-400" />,
-  TypeScript: <SiTypescript size={iconSize} className="text-blue-400" />,
-  "Next.js": <SiNextdotjs size={iconSize} />,
-  "React.js": <SiReact size={iconSize} className="text-sky-500" />,
-  TailwindCSS: <SiTailwindcss size={iconSize} className="text-cyan-300" />,
-  Bootstrap: (
-    <BsFillBootstrapFill size={iconSize} className="text-purple-500" />
-  ),
-  GraphQL: <SiGraphql size={iconSize} className="text-pink-600" />,
-  Apollo: <SiApollographql size={iconSize} />,
-  WordPress: <SiWordpress size={iconSize} />,
-  Laravel: <SiLaravel size={iconSize} className="text-red-500" />,
-  "Material UI": <SiMui size={iconSize} className="text-sky-400" />,
-  Vite: <SiVite size={iconSize} className="text-purple-500" />,
-  Prisma: <SiPrisma size={iconSize} className="text-emerald-500" />,
-  Firebase: <SiFirebase size={iconSize} className="text-yellow-500" />,
-  "Artificial Intelligence": (
-    <BsRobot size={iconSize} className="text-rose-500" />
-  ),
-  Angular: <SiAngular size={iconSize} className="text-red-500" />,
-  "Vue.js": <SiVuedotjs size={iconSize} className="text-green-500" />,
-  "Nuxt.js": <SiNuxtdotjs size={iconSize} className="text-green-400" />,
-  "Node.js": <SiNodedotjs size={iconSize} className="text-green-600" />,
-  Gatsby: <SiGatsby size={iconSize} className="text-purple-600" />,
-  Redux: <SiRedux size={iconSize} className="text-purple-500" />,
-  Webpack: <SiWebpack size={iconSize} className="text-blue-500" />,
-  "Styled Components": (
-    <SiStyledcomponents size={iconSize} className="text-pink-500" />
-  ),
-  PWA: <SiPwa size={iconSize} className="text-amber-600" />,
-  Nginx: <SiNginx size={iconSize} className="text-green-500" />,
-  Jest: <SiJest size={iconSize} className="text-red-600" />,
-  Storybook: <SiStorybook size={iconSize} className="text-amber-500" />,
-  CSS: <SiCss3 size={iconSize} className="text-blue-300" />,
-  Socket: <SiSocketdotio size={iconSize} />,
-  Express: <SiExpress size={iconSize} />,
-  Jquery: <SiJquery size={iconSize} />,
+  php: {
+    label: "PHP",
+    icon: <SiPhp size={iconSize} className="text-blue-500" />,
+  },
+  javascript: {
+    label: "JavaScript",
+    icon: <SiJavascript size={iconSize} className="text-yellow-400" />,
+  },
+  typescript: {
+    label: "TypeScript",
+    icon: <SiTypescript size={iconSize} className="text-blue-400" />,
+  },
+  nextjs: { label: "Next.js", icon: <SiNextdotjs size={iconSize} /> },
+  reactjs: {
+    label: "React.js",
+    icon: <SiReact size={iconSize} className="text-sky-500" />,
+  },
+  tailwindcss: {
+    label: "TailwindCSS",
+    icon: <SiTailwindcss size={iconSize} className="text-cyan-300" />,
+  },
+  bootstrap: {
+    label: "Bootstrap",
+    icon: <BsFillBootstrapFill size={iconSize} className="text-purple-500" />,
+  },
+  graphql: {
+    label: "GraphQL",
+    icon: <SiGraphql size={iconSize} className="text-pink-600" />,
+  },
+  laravel: {
+    label: "Laravel",
+    icon: <SiLaravel size={iconSize} className="text-red-500" />,
+  },
+  vite: {
+    label: "Vite",
+    icon: <SiVite size={iconSize} className="text-purple-500" />,
+  },
+  prisma: {
+    label: "Prisma",
+    icon: <SiPrisma size={iconSize} className="text-emerald-500" />,
+  },
+  firebase: {
+    label: "Firebase",
+    icon: <SiFirebase size={iconSize} className="text-yellow-500" />,
+  },
+  artificialIntelligence: {
+    label: "Artificial Intelligence",
+    icon: <BsRobot size={iconSize} className="text-rose-500" />,
+  },
+  nodejs: {
+    label: "Node.js",
+    icon: <SiNodedotjs size={iconSize} className="text-green-600" />,
+  },
+  css: {
+    label: "CSS",
+    icon: <SiCss3 size={iconSize} className="text-blue-300" />,
+  },
+  expressjs: { label: "Express.js", icon: <SiExpress size={iconSize} /> },
+  jquery: { label: "jQuery", icon: <SiJquery size={iconSize} /> },
+  flutter: {
+    label: "Flutter",
+    icon: <SiFlutter size={iconSize} className="text-blue-400" />,
+  },
+  supabase: {
+    label: "Supabase",
+    icon: <SiSupabase size={iconSize} className="text-green-500" />,
+  },
+  dart: {
+    label: "Dart",
+    icon: <SiDart size={iconSize} className="text-blue-400" />,
+  },
 };

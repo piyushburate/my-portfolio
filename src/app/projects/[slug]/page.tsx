@@ -1,7 +1,8 @@
 "use client";
 
+import BackButton from "@/components/back-button";
 import PageHeading from "@/components/page-heading";
-import { Button } from "@/components/ui/button";
+import RichTextRenderer from "@/components/rich-text-renderer";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -9,33 +10,35 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { STACKS } from "@/constants/stacks";
+import { useProjectStore } from "@/stores/use-project-store";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import React from "react";
-import { BsArrowLeftCircle, BsGithub } from "react-icons/bs";
+import React, { useEffect } from "react";
+import { BsGithub } from "react-icons/bs";
 import { FiExternalLink } from "react-icons/fi";
 
 export default function ProjectPage() {
   const { slug } = useParams<{ slug: string }>();
-  const project = {
-    slug: slug,
-    title: slug.toString().split("-"),
-    techStack: ["React.js", "Next.js", "TailwindCSS"],
-  };
+  const { project, fetchProject, loading } = useProjectStore();
+
+  useEffect(() => {
+    if (slug && project == null) {
+      fetchProject(slug);
+    }
+  }, []);
+
+  if (project == null || loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
   return (
     <div className="py-10 px-8">
-      <Button
-        variant="ghost"
-        className="hover:!bg-transparent group text-base !px-0 mb-4 cursor-pointer"
-      >
-        <BsArrowLeftCircle className="size-4.5" />
-        <span className="group-hover:translate-x-2 transition">Back</span>
-      </Button>
-      <PageHeading
-        title="My Portfolio"
-        description="Personal website was built originally from scratch using several powerful stacks."
-      />
+      <BackButton />
+      <PageHeading title={project.title} description={project.description} />
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
         {/* Tech Stack */}
         <div className="flex items-center gap-2">
@@ -44,8 +47,8 @@ export default function ProjectPage() {
             {project.techStack &&
               project.techStack.map((key) => (
                 <Tooltip key={key}>
-                  <TooltipTrigger>{STACKS[key]}</TooltipTrigger>
-                  <TooltipContent>{key}</TooltipContent>
+                  <TooltipTrigger>{STACKS[key]?.icon}</TooltipTrigger>
+                  <TooltipContent>{STACKS[key]?.label}</TooltipContent>
                 </Tooltip>
               ))}
           </div>
@@ -53,22 +56,36 @@ export default function ProjectPage() {
 
         {/* Project Links */}
         <div className="flex items-center gap-4">
-          <Link href="#" className="flex items-center gap-2 text-sm ">
-            <BsGithub className="size-5" />
-            <span>Source Code</span>
-          </Link>
-          <Separator orientation="vertical" />
-          <Link href="#" className="flex items-center gap-2 text-sm">
-            <FiExternalLink className="size-5" />
-            <span>Live Demo</span>
-          </Link>
+          {project.sourceCodeUrl && (
+            <Link
+              href={project.sourceCodeUrl}
+              target="_blank"
+              className="flex items-center gap-2 text-sm "
+            >
+              <BsGithub className="size-5" />
+              <span>Source Code</span>
+            </Link>
+          )}
+          {project.sourceCodeUrl && project.liveDemoUrl && (
+            <Separator orientation="vertical" />
+          )}
+          {project.liveDemoUrl && (
+            <Link
+              href={project.liveDemoUrl}
+              target="_blank"
+              className="flex items-center gap-2 text-sm"
+            >
+              <FiExternalLink className="size-5" />
+              <span>Live Demo</span>
+            </Link>
+          )}
         </div>
       </div>
 
       {/* Cover Image */}
       <div className="w-full mb-6">
         <Image
-          src={`https://picsum.photos/seed/${slug}/800/400`}
+          src={project.coverImage.url}
           alt="Project Cover Image"
           width={100}
           height={100}
@@ -78,7 +95,7 @@ export default function ProjectPage() {
       </div>
 
       {/* Content */}
-      <div className="">This is the content.</div>
+      <RichTextRenderer content={project.content.raw} />
     </div>
   );
 }

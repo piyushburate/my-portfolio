@@ -60,8 +60,8 @@ export default function ProjectCard({
               {techStack &&
                 techStack.map((key) => (
                   <Tooltip key={key}>
-                    <TooltipTrigger>{STACKS[key]}</TooltipTrigger>
-                    <TooltipContent>{key}</TooltipContent>
+                    <TooltipTrigger>{STACKS[key]?.icon}</TooltipTrigger>
+                    <TooltipContent>{STACKS[key]?.label}</TooltipContent>
                   </Tooltip>
                 ))}
             </div>

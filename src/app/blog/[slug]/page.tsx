@@ -2,33 +2,46 @@
 
 import BackButton from "@/components/back-button";
 import PageHeading from "@/components/page-heading";
-import { Button } from "@/components/ui/button";
+import RichTextRenderer from "@/components/rich-text-renderer";
 import { Separator } from "@/components/ui/separator";
 import { formatDate } from "@/lib/utils";
+import { useBlogStore } from "@/stores/use-blog-store";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaRegEye as ViewIcon } from "react-icons/fa";
 import { HiOutlineClock as ClockIcon } from "react-icons/hi";
+import readingTime from "reading-time";
 
 export default function BlogPage() {
   const { slug } = useParams<{ slug: string }>();
-  const project = {
-    slug: slug,
-    title: slug.toString().split("-"),
-    techStack: ["React.js", "Next.js", "TailwindCSS"],
-    published_on: Date(),
-    tags: ["markdown", "wordpress"],
-  };
+  const { blog, fetchBlog, loading } = useBlogStore();
+
+  useEffect(() => {
+    if (slug && blog == null) {
+      fetchBlog(slug);
+    }
+  }, []);
+
+  if (blog == null || loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
+  }
+
+  const getReadingTime = () => readingTime(blog.content.text).text;
+
   return (
     <div className="py-10 px-8">
       <BackButton />
       <PageHeading
-        title="My Portfolio"
+        title={blog.title}
         description={
           <div className="flex flex-col md:flex-row justify-between gap-4 mt-4">
             <div className="flex items-center gap-2 text-sm">
-              Published on {formatDate(project.published_on)}
+              Published on {formatDate(blog.publishedAt)}
             </div>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-1 text-sm">
@@ -38,8 +51,7 @@ export default function BlogPage() {
               </div>
               <div className="flex items-center gap-1 text-sm">
                 <ClockIcon className="size-4" />
-                <span>3</span>
-                <span>Minutes Read</span>
+                <span>{getReadingTime()}</span>
               </div>
             </div>
           </div>
@@ -49,7 +61,7 @@ export default function BlogPage() {
       {/* Cover Image */}
       <div className="w-full mb-6">
         <Image
-          src={`https://picsum.photos/seed/${slug}/800/400`}
+          src={blog.coverImage.url}
           alt="Project Cover Image"
           width={100}
           height={100}
@@ -59,14 +71,14 @@ export default function BlogPage() {
       </div>
 
       {/* Content */}
-      <div className="">This is the content.</div>
+      <RichTextRenderer content={blog.content.raw} />
 
       {/* Tags */}
       <div className="flex flex-col gap-2 mt-6">
         <div className="font-semibold text-lg">Tags:</div>
         <div className="flex flex-wrap gap-2">
-          {project.tags &&
-            project.tags.map((tag) => (
+          {blog.tags &&
+            blog.tags.map((tag) => (
               <div
                 key={tag}
                 className="px-3 py-1 text-base rounded-3xl bg-accent capitalize"
@@ -79,7 +91,7 @@ export default function BlogPage() {
       <Separator className="my-8" />
 
       {/* Comments Section */}
-      <div className="">
+      {/* <div className="">
         <div className="mb-4">0 comments</div>
         <form action="#" className="bg-accent rounded px-4 py-3">
           <textarea
@@ -90,7 +102,7 @@ export default function BlogPage() {
             <Button className="ml-auto">Comment</Button>
           </div>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 }

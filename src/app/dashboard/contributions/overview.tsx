@@ -1,17 +1,7 @@
 import { Card } from "@/components/ui/card";
+import { ContributionCalendar } from "@/types/github-user";
 
-interface OverviewProps {
-  data: {
-    totalContributions?: number;
-    weeks?: {
-      contributionDays: {
-        contributionCount: number;
-      }[];
-    }[];
-  };
-}
-
-export const Overview = ({ data }: OverviewProps) => {
+export const Overview = ({ data }: { data: ContributionCalendar }) => {
   const totalContributions = data?.totalContributions || 0;
   const weeks = data?.weeks || [];
 
@@ -38,7 +28,11 @@ export const Overview = ({ data }: OverviewProps) => {
       <OverviewItem label="Total" value={totalContributions} />
       <OverviewItem label="This Week" value={totalThisWeekContribution} />
       <OverviewItem label="Best Day" value={bestContribution} />
-      <OverviewItem label="Average" value={parseFloat(Math.abs(averageContribution).toPrecision(5))} unit="/ day" />
+      <OverviewItem
+        label="Average"
+        value={parseFloat(Math.abs(averageContribution).toPrecision(5))}
+        unit="/ day"
+      />
     </div>
   );
 };

@@ -5,7 +5,6 @@ import {
   BiCommand as CommandIcon,
 } from "react-icons/bi";
 import {
-  FiBookOpen as LearnIcon,
   FiCoffee as ProjectIcon,
   FiCpu as DashboardIcon,
   FiPocket as HomeIcon,
@@ -33,6 +32,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
+import { useSidebarStore } from "@/stores/use-sidebar-store";
+import { useEffect } from "react";
+import { Skeleton } from "./ui/skeleton";
+import Link from "next/link";
 
 const MENU_ITEMS = [
   {
@@ -56,11 +59,6 @@ const MENU_ITEMS = [
     icon: BlogIcon,
   },
   {
-    title: "Learn",
-    href: "/learn",
-    icon: LearnIcon,
-  },
-  {
     title: "About",
     href: "/about",
     icon: ProfileIcon,
@@ -75,6 +73,12 @@ const MENU_ITEMS = [
 export function AppSidebar() {
   const pathname = usePathname();
   const { theme, toggleTheme } = useTheme();
+
+  const { data, fetchData, loading } = useSidebarStore();
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Sidebar className="!border-0">
       <SidebarHeader>
@@ -82,10 +86,13 @@ export function AppSidebar() {
           <SidebarGroup className="px-4 mt-4">
             <div className="mb-6">
               <div className="flex items-start justify-between">
-                <Avatar className="size-16 mb-4">
-                  <AvatarImage src="https://avatars.githubusercontent.com/u/121924335?v=4" />
-                  <AvatarFallback>PB</AvatarFallback>
-                </Avatar>
+                {loading && <Skeleton className="size-16 rounded-full" />}
+                {!loading && (
+                  <Avatar className="size-16 mb-4">
+                    <AvatarImage src={data?.profilePhoto.url} />
+                    <AvatarFallback>PB</AvatarFallback>
+                  </Avatar>
+                )}
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
@@ -109,10 +116,21 @@ export function AppSidebar() {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <p className="text-xl">Piyush Burate</p>
-              <p className="text-sm text-muted-foreground">
-                @{process.env.NEXT_PUBLIC_GITHUB_USERNAME}
-              </p>
+              {loading ? (
+                <div className="space-y-2 mt-5">
+                  <Skeleton className="w-4/5 h-5" />
+                  <Skeleton className="w-4/5 h-4" />
+                </div>
+              ) : (
+                <>
+                  <p className="text-xl">
+                    {data?.firstName} {data?.lastName}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    @{data?.username}
+                  </p>
+                </>
+              )}
             </div>
 
             <div className="flex items-center gap-3 rounded-md border-[1.8px] border-neutral-300 bg-neutral-100 px-3 py-1 text-neutral-500 backdrop-blur dark:border-neutral-700 dark:bg-neutral-900">
@@ -145,13 +163,13 @@ export function AppSidebar() {
                       isActive={isActive}
                       asChild
                     >
-                      <a href={item.href}>
+                      <Link href={item.href}>
                         <item.icon className="!size-4.5" />
                         <span>{item.title}</span>
                         {isActive && (
                           <FiArrowRight className="!size-4 ml-auto" />
                         )}
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );

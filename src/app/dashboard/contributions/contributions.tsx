@@ -1,19 +1,23 @@
 import { BsGithub as GithubIcon } from "react-icons/bs";
-import useSWR from "swr";
 
-import { fetcher } from "@/services/fetcher";
 import { Overview } from "./overview";
 import Calendar from "./calendar";
+import { ContributionGraphSkeleton } from "@/components/skeletons/contribution-graph-skeleton";
+import { useGithubStore } from "@/stores/use-github-store";
+import { useEffect } from "react";
 
 type ContributionsProps = {
   username: string;
 };
 
 const Contributions = ({ username }: ContributionsProps) => {
-  const { data } = useSWR("/api/github", fetcher);
+  const { data, fetchData, loading } = useGithubStore();
 
-  const contributionCalendar =
-    data?.contributionsCollection?.contributionCalendar;
+  useEffect(() => {
+    if (data == null) {
+      fetchData();
+    }
+  }, []);
 
   return (
     <section>
@@ -34,12 +38,12 @@ const Contributions = ({ username }: ContributionsProps) => {
         </a>
       </div>
 
-      {!data && <div className="text-muted-foreground">No Data</div>}
+      {loading && !data && <ContributionGraphSkeleton />}
 
       {data && (
         <div className="space-y-3">
-          <Overview data={contributionCalendar} />
-          <Calendar data={contributionCalendar} />
+          <Overview data={data.contributionsCollection.contributionCalendar} />
+          <Calendar data={data.contributionsCollection.contributionCalendar} />
         </div>
       )}
     </section>

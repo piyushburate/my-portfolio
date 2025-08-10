@@ -1,3 +1,4 @@
+import { GithubUserType } from '@/types/github-user';
 import axios from 'axios';
 
 const GITHUB_USER_ENDPOINT = 'https://api.github.com/graphql';
@@ -29,7 +30,7 @@ const GITHUB_USER_QUERY = `query($username: String!) {
 export const fetchGithubData = async (
   username: string,
   token: string | undefined,
-) => {
+) : Promise<GithubUserType | null> => {
   const response = await axios.post(
     GITHUB_USER_ENDPOINT,
     {
@@ -49,15 +50,15 @@ export const fetchGithubData = async (
   const responseJson = response.data;
 
   if (status > 400) {
-    return { status, data: {} };
+    return null;
   }
 
-  return { status, data: responseJson.data.user };
+  return responseJson.data.user;
 };
 
-export const getGithubUser = async () => {
+export const getGithubUser = async () : Promise<GithubUserType | null> => {
   const username = process.env.NEXT_PUBLIC_GITHUB_USERNAME;
-  const token = process.env.GITHUB_ACCOUNT_ACCESS_TOKEN;
+  const token = process.env.NEXT_PUBLIC_GITHUB_ACCOUNT_ACCESS_TOKEN;
   if (!username || !token) {
     throw new Error('Invalid user type');
   }

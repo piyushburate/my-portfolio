@@ -1,12 +1,13 @@
 import { fetcher } from "@/services/fetcher";
 import React from "react";
 import useSWR from "swr";
-import { SiWakatime as WakatimeIcon } from 'react-icons/si';
+import { SiWakatime as WakatimeIcon } from "react-icons/si";
 import { Overview } from "./overview";
 import CodingActiveList from "./coding-active-list";
+import { CodingStatsSkeleton } from "@/components/skeletons/coding-stats-skeleton";
 
 export default function CodingActive() {
-  const { data } = useSWR("/api/read-stats", fetcher);
+  const { data, isLoading } = useSWR("/api/read-stats", fetcher);
 
   return (
     <section>
@@ -25,7 +26,8 @@ export default function CodingActive() {
         </a>{" "}
         last 7 days stats.
       </p>
-      <Overview data={data} />
+      {isLoading && !data && <CodingStatsSkeleton />}
+      {data && <Overview data={data} />}
       {data?.languages && data?.categories && <CodingActiveList data={data} />}
     </section>
   );

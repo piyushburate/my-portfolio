@@ -1,38 +1,30 @@
 import { Card } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
+import { DataProps } from "@/types/wakatime";
 
 interface OverviewProps {
-  data: {
-    human_readable_total?: string;
-    human_readable_daily_average?: string;
-    best_day?: {
-      text?: string;
-      date?: string;
-    };
-    all_time_since_today?: {
-      text?: string;
-    };
-    start_date?: string;
-    end_date?: string;
-  };
+  data: DataProps | null;
 }
 
 export const Overview = ({ data }: OverviewProps) => {
-  const dailyTotal = data?.human_readable_total || "N/A";
-  const dailyAverage = data?.human_readable_daily_average || "N/A";
-  const bestDayText = data?.best_day?.text || "N/A";
-  const bestDayDate = data?.best_day?.date;
-  const allTimeSinceToday = data?.all_time_since_today?.text || "N/A";
-  const startDate = data?.start_date ? formatDate(data.start_date) : "";
-  const endDate = data?.end_date ? formatDate(data.end_date) : "";
+  const dailyTotal = data?.humanReadableTotal || "N/A";
+  const dailyAverage = data?.humanReadableDailyAverage || "N/A";
+  const bestDayText = data?.bestDay?.text || "N/A";
+  const bestDayDate = data?.bestDay?.date;
+  const allTimeSinceToday = data?.allTimeSinceToday?.text || "N/A";
+  const startDate = data?.startDate
+    ? formatDate(data.startDate)
+    : "";
+  const endDate = data?.endDate ? formatDate(data.endDate) : "";
   const bestDay = bestDayDate
     ? `${formatDate(bestDayDate)} (${bestDayText})`
     : "N/A";
+  const today = data?.todayCodetime?.text ?? 'N/A';
 
   return (
     <div className="mb-1 grid gap-3 py-2 md:grid-cols-2">
-      <OverviewItem label="Start Date" value={startDate} />
-      <OverviewItem label="End Date" value={endDate} />
+      <OverviewItem label="Range" value={`${startDate} - ${endDate}`} />
+      <OverviewItem label="Today&apos;s Coding Time" value={today} />
       <OverviewItem label="Daily Coding Average" value={dailyAverage} />
       <OverviewItem label="This Week Coding Time" value={dailyTotal} />
       <OverviewItem label="Best Day Coding Time" value={bestDay} />

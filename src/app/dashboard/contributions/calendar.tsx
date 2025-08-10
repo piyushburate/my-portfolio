@@ -1,31 +1,8 @@
 import { cn } from "@/lib/utils";
+import { ContributionCalendar, Month } from "@/types/github-user";
 import { useState } from "react";
 
-interface Contribution {
-  date: string;
-  contributionCount: number;
-  color: string;
-}
-
-interface Month {
-  name: string;
-  firstDay: string;
-  totalWeeks: number;
-  contributionsCount: number;
-}
-
-interface CalendarProps {
-  data?: {
-    weeks: {
-      firstDay: string;
-      contributionDays: Contribution[];
-    }[];
-    months: Month[];
-    colors: string[];
-  };
-}
-
-const Calendar = ({ data }: CalendarProps) => {
+const Calendar = ({ data }: { data: ContributionCalendar }) => {
   const [selectContribution, setSelectContribution] = useState<{
     count: number | null;
     date: string | null;
